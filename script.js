@@ -710,13 +710,13 @@ const AuthManagement = (() => {
             UIService.showToast("Cadastro realizado com sucesso! Registre sua empresa.", "success");
             UIService.showAuthForm(DOM.companyRegisterForm); // Move to company registration
         } catch (error) {
-            console.error("Erro no registro:", error);
-            if (error.code === 'auth/email-already-in-use') {
-                UIService.showToast("Este e-mail já está em uso. Tente fazer login ou use outro e-mail.", "error");
-            } else {
-                UIService.showToast("Erro no registro: " + error.message, "error");
-            }
-        }
+    console.error("Erro no registro:", error);
+    if (error.code === 'auth/email-already-in-use') {
+        UIService.showToast("Este e-mail já está em uso. Tente fazer login ou use outro e-mail.", "error");
+    } else {
+        UIService.showToast("Erro no registro: " + error.message, "error");
+    }
+}
     };
 
     /**
