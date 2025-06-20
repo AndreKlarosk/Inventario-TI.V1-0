@@ -711,11 +711,11 @@ const AuthManagement = (() => {
             UIService.showAuthForm(DOM.companyRegisterForm); // Move to company registration
         } catch (error) {
             console.error("Erro no registro:", error);
-            UIService.showToast("E-mail em uso, utilize outro válido" + error.message, "error");
-            UIService.showToast("Erro no registro: " + error.message, "error");
-        } finally {
-            UIService.showLoading(false);
-        }
+            if (error.code === 'auth/email-already-in-use') {
+                UIService.showToast("Este e-mail já está em uso. Tente fazer login ou use outro e-mail.", "error");
+            } else {
+                UIService.showToast("Erro no registro: " + error.message, "error");
+            }
     };
 
     /**
