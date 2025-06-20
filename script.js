@@ -694,51 +694,32 @@ const AuthManagement = (() => {
      * Handles user registration.
      */
     const registerUser = async (e) => {
-        e.preventDefault();
-        const email = DOM.registerEmail.value;
-        const password = DOM.registerPassword.value;
-        const confirmPassword = DOM.registerConfirmPassword.value;
+    e.preventDefault();
+    const email = DOM.registerEmail.value;
+    const password = DOM.registerPassword.value;
+    const confirmPassword = DOM.registerConfirmPassword.value;
 
-        if (password !== confirmPassword) {
-            UIService.showToast("As senhas não coincidem.", "error");
-            return;
-        }
-
-        UIService.showLoading(true);
-        try {
-            await auth.createUserWithEmailAndPassword(email, password);
-            UIService.showToast("Cadastro realizado com sucesso! Registre sua empresa.", "success");
-            UIService.showAuthForm(DOM.companyRegisterForm); // Move to company registration
-        } catch (error) {
-    console.error("Erro no registro:", error);
-    if (error.code === 'auth/email-already-in-use') {
-        UIService.showToast("Este e-mail já está em uso. Tente fazer login ou use outro e-mail.", "error");
-    } else {
-        UIService.showToast("Erro no registro: " + error.message, "error");
+    if (password !== confirmPassword) {
+        UIService.showToast("As senhas não coincidem.", "error");
+        return;
     }
-}
-    };
 
-    /**
-     * Handles user login.
-     */
-    const loginUser = async (e) => {
-        e.preventDefault();
-        const email = DOM.loginEmail.value;
-        const password = DOM.loginPassword.value;
-
-        UIService.showLoading(true);
-        try {
-            await auth.signInWithEmailAndPassword(email, password);
-            UIService.showToast("Login realizado com sucesso!", "success");
-            // Auth listener handles the next step (company selection/app display)
-        } catch (error) {
-            console.error("Erro no login:", error);
-            UIService.showToast("Erro no login: " + error.message, "error");
-        } finally {
-            UIService.showLoading(false);
+    UIService.showLoading(true);
+    try {
+        await auth.createUserWithEmailAndPassword(email, password);
+        UIService.showToast("Cadastro realizado com sucesso! Registre sua empresa.", "success");
+        UIService.showAuthForm(DOM.companyRegisterForm);
+    } catch (error) {
+        console.error("Erro no registro:", error);
+        if (error.code === 'auth/email-already-in-use') {
+            UIService.showToast("Este e-mail já está em uso. Faça login ou use outro e-mail.", "error");
+        } else {
+            UIService.showToast("Erro no registro: " + error.message, "error");
         }
-    };
+    } finally {
+        UIService.showLoading(false);
+    }
+};
 
     /**
      * Handles password reset.
