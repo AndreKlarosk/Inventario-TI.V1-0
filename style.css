@@ -1,0 +1,853 @@
+/* Base styles and utility classes */
+:root {
+    /* Color Palette */
+    --primary-color: #3B82F6; /* Blue-500, main interactive color */
+    --primary-dark-color: #2563EB; /* Blue-600, darker hover state */
+    --secondary-color: #6B7280; /* Gray-500, for secondary elements */
+    --accent-color: #EC4899; /* Pink-500, for highlights */
+    --success-color: #10B981; /* Green-500 */
+    --success-dark-color: #059669; /* Green-600 */
+    --error-color: #EF4444; /* Red-500 */
+    --error-dark-color: #DC2626; /* Red-600 */
+    --info-color: #60A5FA; /* Blue-400 */
+    --info-dark-color: #3B82F6; /* Blue-500 */
+    --warning-color: #F59E0B; /* Amber-500 */
+    --warning-dark-color: #D97706; /* Amber-600 */
+
+    /* Backgrounds */
+    --bg-light: #F9FAFB; /* Gray-50, very light background */
+    --bg-medium: #F3F4F6; /* Gray-100 */
+    --bg-dark: #E5E7EB; /* Gray-200 */
+    --bg-white: #FFFFFF; /* Pure white */
+
+    /* Text Colors */
+    --text-primary: #1F2937; /* Gray-800 */
+    --text-secondary: #4B5563; /* Gray-600 */
+    --text-light: #6B7280; /* Gray-500 */
+
+    /* Borders & Shadows */
+    --border-color: #D1D5DB; /* Gray-300 */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 8px 10px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.2), 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+/* Ajustes para modais responsivos com rolagem */
+.app-modal-content {
+    max-height: 90vh; /* Limita a altura máxima do conteúdo do modal a 90% da altura da viewport */
+    overflow-y: auto; /* Adiciona barra de rolagem vertical se o conteúdo exceder a altura máxima */
+    -webkit-overflow-scrolling: touch; /* Melhor rolagem em dispositivos iOS */
+    padding-right: 15px; /* Evita que o scrollbar cubra o conteúdo */
+}
+
+
+/* Para telas pequenas, o modal pode ocupar mais largura */
+@media (max-width: 768px) {
+    .app-modal-dialog {
+        width: 95%; /* Ocupa mais largura em telas menores */
+        margin: 10px auto; /* Centraliza com margem */
+    }
+
+    .app-modal-content {
+        padding: 1rem; /* Ajusta o padding interno para telas menores */
+    }
+
+    .app-form-grid {
+        grid-template-columns: 1fr; /* Coloca os campos em uma única coluna em telas muito pequenas */
+        gap: 0.75rem; /* Reduz o espaçamento entre os campos */
+    }
+}
+body {
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-light);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track { background: var(--bg-medium); border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-dark-color); }
+
+/* General Interactive Elements */
+button, input[type="submit"], input[type="button"] {
+    cursor: pointer;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease-in-out;
+    border: none;
+}
+
+/* Button Styles */
+.app-btn-primary, .app-btn-secondary, .app-btn-danger, .app-btn-success, .app-btn-info, .app-btn-warning {
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    box-shadow: var(--shadow-md);
+    transform: scale(1);
+}
+.app-btn-primary { background-color: var(--primary-color); color: var(--bg-white); }
+.app-btn-primary:hover { background-color: var(--primary-dark-color); transform: scale(1.03); box-shadow: var(--shadow-lg); }
+.app-btn-primary:active { transform: scale(0.98); }
+
+.app-btn-secondary { background-color: var(--bg-dark); color: var(--text-primary); }
+.app-btn-secondary:hover { background-color: var(--border-color); transform: scale(1.03); box-shadow: var(--shadow-md); }
+.app-btn-secondary:active { transform: scale(0.98); }
+
+.app-btn-danger { background-color: var(--error-color); color: var(--bg-white); }
+.app-btn-danger:hover { background-color: var(--error-dark-color); transform: scale(1.03); box-shadow: var(--shadow-lg); }
+.app-btn-danger:active { transform: scale(0.98); }
+
+.app-btn-success { background-color: var(--success-color); color: var(--bg-white); }
+.app-btn-success:hover { background-color: var(--success-dark-color); transform: scale(1.03); box-shadow: var(--shadow-lg); }
+.app-btn-success:active { transform: scale(0.98); }
+
+.app-btn-info { background-color: var(--info-color); color: var(--bg-white); }
+.app-btn-info:hover { background-color: var(--info-dark-color); transform: scale(1.03); box-shadow: var(--shadow-lg); }
+.app-btn-info:active { transform: scale(0.98); }
+
+.app-btn-warning { background-color: var(--warning-color); color: var(--bg-white); }
+.app-btn-warning:hover { background-color: var(--warning-dark-color); transform: scale(1.03); box-shadow: var(--shadow-lg); }
+.app-btn-warning:active { transform: scale(0.98); }
+
+button:disabled, .app-btn-primary:disabled, .app-btn-secondary:disabled, .app-btn-danger:disabled, .app-btn-success:disabled, .app-btn-info:disabled, .app-btn-warning:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Input Fields */
+.app-input, .app-select {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background-color: var(--bg-white);
+    color: var(--text-primary);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: all 0.2s ease-in-out;
+    box-shadow: var(--shadow-sm);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.app-input:focus, .app-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3), var(--shadow-md);
+}
+
+.app-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%233B82F6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+}
+
+/* Specific Forms and Layouts */
+#authContainer {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark-color) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    min-height: 100vh; /* Garante que o container de auth ocupe a altura total da viewport */
+}
+
+#authContainer > div { /* All auth forms (login, register, etc.) */
+    background-color: var(--bg-white);
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-2xl);
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    animation: scale-in-fade-in 0.4s ease-out forwards;
+    /* Adicionado para rolagem caso o conteúdo de auth seja longo */
+    max-height: 90vh; /* Limita a altura para que não estoure a tela */
+    overflow-y: auto; /* Adiciona barra de rolagem se o conteúdo exceder */
+}
+
+#authContainer h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-dark-color);
+    margin-bottom: 2rem;
+    line-height: 1.2;
+}
+
+#authContainer label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    display: block;
+    text-align: left;
+}
+
+#authContainer .form-group {
+    margin-bottom: 1.25rem;
+}
+
+#authContainer .form-links {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
+#authContainer .form-links a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+#authContainer .form-links a:hover {
+    color: var(--primary-dark-color);
+    text-decoration: underline;
+}
+
+#appHeader {
+    background-color: var(--bg-white);
+    padding: 1.5rem 2rem;
+    box-shadow: var(--shadow-md);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+#appHeader .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#appHeader .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#appHeader h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-dark-color);
+    line-height: 1;
+}
+
+#appHeader #companyDisplay {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+main {
+    padding: 2rem;
+}
+
+/* Dashboard Section */
+#dashboardSection {
+    padding: 2rem;
+    background-color: var(--bg-light);
+}
+
+#dashboardSection .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+#dashboardSection .stats-card {
+    background-color: var(--bg-white);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#dashboardSection .stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+#dashboardSection .stats-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+}
+
+#dashboardSection .stats-card .value {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+#dashboardSection .stats-card .label {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+#dashboardSection .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+#dashboardSection .chart-card {
+    background-color: var(--bg-white);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+#dashboardSection .chart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+
+/* Table Section */
+#tableSection {
+    padding: 2rem;
+    background-color: var(--bg-light);
+}
+
+#tableSection .filters-and-search {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background-color: var(--bg-white);
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+}
+
+#tableSection .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#tableSection .filter-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+#tableSection .table-container {
+    background-color: var(--bg-white);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-xl);
+    overflow-x: auto;
+}
+
+.asset-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.asset-table th, .asset-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--bg-dark);
+}
+
+.asset-table th {
+    background-color: var(--bg-medium);
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+}
+
+.asset-table thead tr:first-child th:first-child { border-top-left-radius: 0.75rem; }
+.asset-table thead tr:first-child th:last-child { border-top-right-radius: 0.75rem; }
+.asset-table tbody tr:last-child td:first-child { border-bottom-left-radius: 0.75rem; }
+.asset-table tbody tr:last-child td:last-child { border-bottom-right-radius: 0.75rem; }
+
+.asset-table tbody tr:hover {
+    background-color: var(--bg-light);
+}
+
+.asset-table .status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.asset-table .bg-green-100 { background-color: #D1FAE5; }
+.asset-table .text-green-800 { color: #065F46; }
+.asset-table .bg-yellow-100 { background-color: #FEF3C7; }
+.asset-table .text-yellow-800 { color: #92400E; }
+.asset-table .bg-blue-100 { background-color: #DBEAFE; }
+.asset-table .text-blue-800 { color: #1E40AF; }
+.asset-table .bg-red-100 { background-color: #FEE2E2; }
+.asset-table .text-red-800 { color: #991B1B; }
+.asset-table .bg-gray-100 { background-color: #F3F4F6; }
+.asset-table .text-gray-800 { color: #1F2937; }
+
+/* Pagination */
+#pagination {
+    background-color: var(--bg-white);
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md);
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+#pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* Modals */
+.fixed.inset-0.bg-gray-800.bg-opacity-70 {
+    background-color: rgba(31, 41, 55, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 1rem;
+}
+
+.modal-content {
+    background-color: var(--bg-white);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-2xl);
+    max-width: 600px; /* Largura padrão */
+    width: 90%; /* Ocupa 90% da largura da tela, permitindo margens */
+    max-height: 90vh; /* Limita a altura para 90% da viewport */
+    overflow-y: auto; /* Adiciona barra de rolagem vertical se o conteúdo for maior que o modal */
+    position: relative;
+    padding: 2.5rem;
+    animation: scale-in-fade-in 0.3s ease-out forwards;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-dark-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.modal-content .close-modal-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
+    color: var(--text-light);
+    transition: color 0.2s ease-in-out;
+    background: none;
+    padding: 0;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content .close-modal-btn:hover {
+    color: var(--error-color);
+    background-color: var(--bg-medium);
+}
+
+/* Asset Form Specifics - Crucial para a responsividade do formulário */
+.asset-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+.asset-form-grid .full-width {
+    grid-column: 1 / -1;
+}
+
+.dynamic-field {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+.dynamic-field input {
+    flex: 1;
+    min-width: 100px;
+}
+
+.dynamic-field button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+}
+#dynamicFields {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+}
+#addDynamicFieldBtn {
+    margin-top: 0.5rem;
+}
+
+
+/* Asset Details Modal */
+#assetDetailsContent {
+    flex-grow: 1;
+    padding-bottom: 1.5rem;
+}
+#assetDetailsContent p {
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+#assetDetailsContent strong {
+    color: var(--text-primary);
+}
+
+#assetDetailsContent .text-xs {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+#assetDetailsModal .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--bg-medium);
+}
+
+
+/* Message Box */
+#messageBox .modal-content {
+    background-color: var(--bg-white);
+    padding: 2rem;
+    text-align: center;
+    max-width: 400px;
+    /* Também aplica as regras de altura e rolagem se o conteúdo for grande */
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+#messageBoxTitle {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-dark-color);
+    margin-bottom: 1rem;
+}
+
+#messageBoxContent {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+#messageBoxActions button {
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+}
+
+
+/* Toast Container */
+#toastContainer {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+#toastContainer > div {
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-lg);
+    color: var(--bg-white);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+#toastContainer > div.translate-x-0 {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+#toastContainer .bg-green-500 { background-color: var(--success-color); }
+#toastContainer .bg-red-500 { background-color: var(--error-color); }
+#toastContainer .bg-blue-500 { background-color: var(--info-color); }
+
+
+/* Loading Overlay */
+#loadingOverlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(31, 41, 55, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
+}
+#loadingOverlay .animate-spin {
+    border: 4px solid var(--primary-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+
+/* Utility Classes (for clarity, usually handled by Tailwind directly) */
+.hidden { display: none !important; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+.flex-col { flex-direction: column; }
+.flex-1 { flex: 1; }
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.my-4 { margin-top: 1rem; margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mt-4 { margin-top: 1rem; }
+.ml-2 { margin-left: 0.5rem; }
+.mr-2 { margin-right: 0.5rem; }
+.p-4 { padding: 1rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-white { color: var(--bg-white); }
+.text-gray-500 { color: var(--text-light); }
+.text-gray-800 { color: var(--text-primary); }
+.text-xl { font-size: 1.25rem; }
+.text-2xl { font-size: 1.5rem; }
+.text-sm { font-size: 0.875rem; }
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.w-full { width: 100%; }
+.max-w-md { max-width: 28rem; }
+.min-h-screen { min-height: 100vh; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.top-4 { top: 1rem; }
+.right-4 { right: 1rem; }
+.z-50 { z-index: 50; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-full { border-radius: 9999px; }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-2xl { box-shadow: var(--shadow-2xl); }
+.ring-1 { box-shadow: 0 0 0 1px currentColor; }
+.ring-blue-200 { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+.transition-opacity { transition: opacity 0.3s ease-in-out; }
+
+/* Animation Keyframes */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scale-in-fade-in { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
+.animate-scale-in-fade-in { animation: scale-in-fade-in 0.3s ease-out forwards; }
+
+/* Styles for validation errors */
+.error-message {
+    color: var(--error-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 767px) { /* Medium screens (e.g., tablets in portrait, and smaller desktops) */
+    #appHeader {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    #appHeader .header-left,
+    #appHeader .header-right {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.75rem;
+    }
+
+    #appHeader button {
+        width: 100%;
+    }
+
+    /* Adjust grids for dashboard and filters to single column */
+    #dashboardSection .stats-grid,
+    #dashboardSection .charts-grid,
+    #tableSection .filters-and-search {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    /* ********************************************************** */
+    /* Melhoria PRINCIPAL para formulários e modais em telas médias */
+    /* ********************************************************** */
+    .modal-content {
+        max-width: 95%; /* Ocupa mais largura em telas médias */
+        width: 100%; /* Garante que ele preencha a largura disponível dentro do max-width */
+        padding: 1.5rem; /* Reduz o padding para ganhar espaço */
+    }
+    .modal-content h3 {
+        font-size: 1.75rem; /* Títulos menores nos modais */
+        margin-bottom: 1rem;
+    }
+
+    /* Colapsa o grid do formulário de ativos para uma coluna */
+    .asset-form-grid {
+        grid-template-columns: 1fr; /* Uma única coluna */
+        gap: 1rem; /* Espaçamento menor entre campos */
+    }
+
+    /* Ajusta campos dinâmicos para empilhar */
+    .dynamic-field {
+        flex-direction: column; /* Itens empilhados verticalmente */
+        align-items: stretch; /* Estica os itens para preencher a largura */
+        gap: 0.5rem; /* Espaçamento menor */
+    }
+    .dynamic-field input, .dynamic-field button {
+        width: 100%; /* Input e botão ocupam largura total */
+    }
+    .dynamic-field button {
+        margin-top: 0.5rem; /* Espaçamento entre input e botão (se empilhados) */
+    }
+
+    /* Formulários de autenticação (login/cadastro) */
+    #authContainer > div {
+        padding: 1.5rem; /* Reduz o padding interno do card de auth */
+        max-width: 90%; /* Permite que ocupe mais largura da tela */
+    }
+    #authContainer h2 {
+        font-size: 2rem; /* Títulos menores na tela de auth */
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 639px) { /* Small screens (e.g., mobile phones) */
+    body {
+        font-size: 0.95rem;
+    }
+
+    /* Formulário de autenticação em telas muito pequenas */
+    #authContainer > div {
+        padding: 1rem; /* Padding ainda menor */
+        border-radius: 0.75rem; /* Cantos um pouco menos arredondados para um visual mais compacto */
+    }
+    #authContainer h2 {
+        font-size: 1.75rem; /* Título bem menor */
+        margin-bottom: 1rem;
+    }
+
+    /* Botões em geral */
+    .app-btn-primary, .app-btn-secondary, .app-btn-danger, .app-btn-success, .app-btn-info, .app-btn-warning {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Inputs e selects */
+    .app-input, .app-select {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .asset-table th, .asset-table td {
+        padding: 0.8rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    #pagination {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.8rem 1rem;
+    }
+
+    #toastContainer {
+        bottom: 0.5rem;
+        left: 0.5rem;
+        right: 0.5rem;
+        max-width: unset;
+    }
+
+    #toastContainer > div {
+        font-size: 0.85rem;
+        padding: 0.8rem 1rem;
+    }
+
+    /* Modais em telas muito pequenas */
+    .fixed.inset-0.bg-gray-800.bg-opacity-70 {
+        padding: 0.5rem; /* Padding mínimo para o overlay do modal */
+    }
+    .modal-content {
+        padding: 1rem; /* Padding interno do modal ainda menor */
+        border-radius: 0.75rem; /* Cantos menos arredondados */
+        max-height: 95vh; /* Pode ocupar mais altura */
+        width: 100%; /* Garante que ocupe a largura total, considerando o padding do overlay */
+    }
+    .modal-content h3 {
+        font-size: 1.5rem; /* Títulos menores */
+        margin-bottom: 1rem;
+    }
+}

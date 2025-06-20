@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventário de Ativos Profissional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 font-sans antialiased text-gray-800">
+
+    <div id="loadingOverlay" class="fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center z-[100] transition-opacity duration-300">
+        <div class="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-blue-500"></div>
+    </div>
+
+    <div id="authContainer" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div id="loginForm" class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md text-center hidden" aria-labelledby="loginTitle">
+            <h2 id="loginTitle" class="text-3xl font-bold text-gray-900 mb-6">Bem-vindo de Volta!</h2>
+            <p class="text-gray-600 mb-6">Entre para acessar seu inventário de ativos.</p>
+            <form class="space-y-5">
+                <div>
+                    <label for="loginEmail" class="app-label">Email</label>
+                    <input type="email" id="loginEmail" placeholder="seuemail@empresa.com" class="app-input" required autocomplete="email">
+                </div>
+                <div>
+                    <label for="loginPassword" class="app-label">Senha</label>
+                    <input type="password" id="loginPassword" placeholder="********" class="app-input" required autocomplete="current-password">
+                </div>
+                <button type="submit" id="loginBtn" class="app-btn-primary w-full">Entrar</button>
+            </form>
+            <p class="mt-6 text-sm text-gray-600">Não tem uma conta? <a href="#" id="showRegister" class="text-blue-600 hover:text-blue-800 font-semibold transition duration-200">Registre-se</a></p>
+            <p class="mt-3 text-sm text-gray-600"><a href="#" id="showResetPassword" class="text-blue-600 hover:text-blue-800 font-semibold transition duration-200">Esqueceu sua senha?</a></p>
+        </div>
+
+        <div id="registerForm" class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md text-center hidden" aria-labelledby="registerTitle">
+            <h2 id="registerTitle" class="text-3xl font-bold text-gray-900 mb-6">Crie Sua Conta</h2>
+            <p class="text-gray-600 mb-6">Comece a gerenciar seus ativos agora!</p>
+            <form class="space-y-5">
+                <div>
+                    <label for="registerEmail" class="app-label">Email</label>
+                    <input type="email" id="registerEmail" placeholder="seuemail@empresa.com" class="app-input" required autocomplete="email">
+                </div>
+                <div>
+                    <label for="registerPassword" class="app-label">Senha</label>
+                    <input type="password" id="registerPassword" placeholder="********" class="app-input" required autocomplete="new-password">
+                </div>
+                <div>
+                    <label for="registerConfirmPassword" class="app-label">Confirmar Senha</label>
+                    <input type="password" id="registerConfirmPassword" placeholder="********" class="app-input" required autocomplete="new-password">
+                </div>
+                <button type="submit" id="registerBtn" class="app-btn-primary w-full">Registrar</button>
+            </form>
+            <p class="mt-6 text-sm text-gray-600">Já tem uma conta? <a href="#" id="showLogin" class="text-blue-600 hover:text-blue-800 font-semibold transition duration-200">Entrar</a></p>
+        </div>
+
+        <div id="companyRegisterForm" class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md text-center hidden" aria-labelledby="companyRegisterTitle">
+            <h2 id="companyRegisterTitle" class="text-3xl font-bold text-gray-900 mb-6">Registre Sua Empresa</h2>
+            <p class="text-gray-600 mb-6">Precisamos de algumas informações sobre sua empresa.</p>
+            <form class="space-y-5">
+                <div>
+                    <label for="companyName" class="app-label">Nome da Empresa</label>
+                    <input type="text" id="companyName" placeholder="Minha Empresa S.A." class="app-input" required>
+                </div>
+                <div>
+                    <label for="companyCnpj" class="app-label">CNPJ (Opcional)</label>
+                    <input type="text" id="companyCnpj" placeholder="00.000.000/0000-00" class="app-input">
+                </div>
+                <button type="submit" id="createCompanyBtn" class="app-btn-primary w-full">Registrar Empresa</button>
+            </form>
+            <p class="mt-6 text-sm text-gray-600">Já tem uma empresa? <a href="#" id="showCompanySelection" class="text-blue-600 hover:text-blue-800 font-semibold transition duration-200">Selecionar</a></p>
+        </div>
+
+        <div id="companySelectForm" class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md text-center hidden" aria-labelledby="companySelectTitle">
+            <h2 id="companySelectTitle" class="text-3xl font-bold text-gray-900 mb-6">Selecione Sua Empresa</h2>
+            <p class="text-gray-600 mb-6">Escolha a empresa para gerenciar os ativos.</p>
+            <form class="space-y-5">
+                <div>
+                    <label for="companySelect" class="app-label">Empresa</label>
+                    <select id="companySelect" class="app-select" required>
+                        <option value="">Carregando empresas...</option>
+                    </select>
+                </div>
+                <button type="submit" id="selectCompanyBtn" class="app-btn-primary w-full">Acessar Inventário</button>
+            </form>
+            <p class="mt-6 text-sm text-gray-600">Quer registrar uma nova? <a href="#" id="showCompanyRegisterFromSelection" class="text-blue-600 hover:text-blue-800 font-semibold transition duration-200">Registrar Nova Empresa</a></p>
+        </div>
+
+        <div id="resetPasswordForm" class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md text-center hidden" aria-labelledby="resetPasswordTitle">
+            <h2 id="resetPasswordTitle" class="text-3xl font-bold text-gray-900 mb-6">Redefinir Senha</h2>
+            <p class="text-gray-600 mb-6">Insira seu e-mail para receber um link de redefinição de senha.</p>
+            <form class="space-y-5">
+                <div>
+                    <label for="resetEmail" class="app-label">Email</label>
+                    <input type="email" id="resetEmail" placeholder="seuemail@empresa.com" class="app-input" required autocomplete="email">
+                </div>
+                <button type="submit" id="resetPasswordBtn" class="app-btn-primary w-full">Redefinir Senha</button>
+            </form>
+            <p class="mt-6 text-sm text-gray-600">Lembrou da senha? <a href="#" id="showLoginFromReset" class="text-blue-600 hover:text-blue-800 font-semibold transition duration-200">Voltar ao Login</a></p>
+        </div>
+    </div>
+
+    <div id="appContainer" class="min-h-screen bg-gray-50 flex flex-col hidden">
+        <header id="appHeader" class="bg-white shadow-md p-6 flex flex-col md:flex-row items-center justify-between sticky top-0 z-40">
+            <h1 class="text-4xl font-extrabold text-blue-700 mb-4 md:mb-0">Inventário de Ativos</h1>
+            <div class="flex items-center space-x-4">
+                <span id="companyDisplay" class="text-lg font-medium text-gray-700"></span>
+                <button id="toggleDashboardBtn" class="app-btn-secondary text-base">
+                    <i class="fas fa-chart-bar mr-2"></i> <span id="toggleDashboardText">Ver Dashboard</span>
+                </button>
+                <button id="addAssetBtn" class="app-btn-primary text-base">
+                    <i class="fas fa-plus mr-2"></i> Adicionar Ativo
+                </button>
+                <button id="logoutBtn" class="app-btn-danger text-base">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Sair
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-grow p-6 flex flex-col items-center">
+            <section id="dashboardSection" class="hidden w-full max-w-7xl bg-white shadow-xl rounded-2xl p-6 mb-8 ring-1 ring-blue-100 animate-fade-in-up">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Resumo do Inventário</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="dashboard-card bg-blue-500 text-white p-6 rounded-lg shadow-md flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium opacity-80">Total de Ativos</p>
+                            <p id="totalAssets" class="text-4xl font-bold mt-1">0</p>
+                        </div>
+                        <i class="fas fa-cube text-5xl opacity-30"></i>
+                    </div>
+                    <div class="dashboard-card bg-green-500 text-white p-6 rounded-lg shadow-md flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium opacity-80">Valor Total Estimado</p>
+                            <p id="totalValue" class="text-3xl font-bold mt-1">R$ 0,00</p>
+                        </div>
+                        <i class="fas fa-dollar-sign text-5xl opacity-30"></i>
+                    </div>
+                    <div class="dashboard-card bg-purple-500 text-white p-6 rounded-lg shadow-md flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium opacity-80">Tipos Únicos</p>
+                            <p id="uniqueTypes" class="text-4xl font-bold mt-1">0</p>
+                        </div>
+                        <i class="fas fa-tags text-5xl opacity-30"></i>
+                    </div>
+                    <div class="dashboard-card bg-orange-500 text-white p-6 rounded-lg shadow-md flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium opacity-80">Localizações Únicas</p>
+                            <p id="uniqueLocations" class="text-4xl font-bold mt-1">0</p>
+                        </div>
+                        <i class="fas fa-map-marker-alt text-5xl opacity-30"></i>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Ativos por Tipo</h3>
+                        <div class="relative h-64">
+                            <canvas id="assetsByTypeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Ativos por Localização</h3>
+                        <div class="relative h-64">
+                            <canvas id="assetsByLocationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tableSection" class="w-full max-w-7xl bg-white shadow-xl rounded-2xl p-6 ring-1 ring-blue-100 animate-fade-in-up">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                    <h2 class="text-3xl font-bold text-gray-900">Meus Ativos</h2>
+                    <div class="flex items-center space-x-3 w-full md:w-auto">
+                        <input type="text" id="searchBar" placeholder="Buscar ativo..." class="app-input flex-grow">
+                        <select id="filterType" class="app-select min-w-[120px]">
+                            <option value="">Todos os Tipos</option>
+                            <option value="Computador">Computador</option>
+                            <option value="Monitor">Monitor</option>
+                            <option value="Software">Software</option>
+                            <option value="Periférico">Periférico</option>
+                            <option value="Smartphone">Smartphone</option>
+                            <option value="Servidor">Servidor</option>
+                            <option value="Impressora">Impressora</option>
+                            <option value="Rede">Equipamento de Rede</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                        <select id="filterLocation" class="app-select min-w-[120px]">
+                            <option value="">Todas as Localizações</option>
+                            </select>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto relative shadow-md sm:rounded-lg mb-6">
+                    <table id="assetTable" class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="py-3 px-6">Nome</th>
+                                <th scope="col" class="py-3 px-6">Tipo</th>
+                                <th scope="col" class="py-3 px-6">Valor</th>
+                                <th scope="col" class="py-3 px-6">Localização</th>
+                                <th scope="col" class="py-3 px-6">Status</th>
+                                <th scope="col" class="py-3 px-6 text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assetTableBody">
+                            <tr>
+                                <td colspan="6" class="py-4 px-6 text-center text-gray-500">Nenhum ativo encontrado.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="pagination" class="flex justify-center items-center space-x-4">
+                    <button id="prevPageBtn" class="app-btn-secondary" disabled><i class="fas fa-chevron-left"></i> Anterior</button>
+                    <span id="currentPageSpan" class="text-gray-700 font-medium">Página 1 de 1</span>
+                    <button id="nextPageBtn" class="app-btn-secondary" disabled>Próxima <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="assetModal" class="fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden animate-fade-in" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="app-modal-dialog">
+            <div class="modal-content app-modal-content">
+            <h3 id="modalTitle" class="text-3xl font-bold text-gray-900 mb-6 text-center">Adicionar Novo Ativo</h3>
+            <form id="assetForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="name" class="app-label">Nome do Ativo <span class="text-red-500">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="Ex: Notebook Dell XPS 15" class="app-input" required maxlength="100">
+                        <p class="text-xs text-gray-500 mt-1">Nome curto e descritivo do ativo.</p>
+                    </div>
+                    <div>
+                        <label for="itemType" class="app-label">Tipo de Ativo <span class="text-red-500">*</span></label>
+                        <select id="itemType" name="itemType" class="app-select" required>
+                            <option value="">Selecione um tipo</option>
+                            <option value="Computador">Computador</option>
+                            <option value="Monitor">Monitor</option>
+                            <option value="Software">Software</option>
+                            <option value="Periférico">Periférico</option>
+                            <option value="Smartphone">Smartphone</option>
+                            <option value="Servidor">Servidor</option>
+                            <option value="Impressora">Impressora</option>
+                            <option value="Rede">Equipamento de Rede</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1">Classificação principal do ativo.</p>
+                    </div>
+                    <div>
+                        <label for="value" class="app-label">Valor (R$) <span class="text-red-500">*</span></label>
+                        <input type="number" id="value" name="value" placeholder="1500.00" class="app-input" required min="0" step="0.01">
+                        <p class="text-xs text-gray-500 mt-1">Valor de aquisição ou atual do ativo.</p>
+                    </div>
+                    <div>
+                        <label for="purchaseDate" class="app-label">Data de Aquisição <span class="text-red-500">*</span></label>
+                        <input type="date" id="purchaseDate" name="purchaseDate" class="app-input" required>
+                        <p class="text-xs text-gray-500 mt-1">Data em que o ativo foi adquirido.</p>
+                    </div>
+                    <div>
+                        <label for="location" class="app-label">Localização <span class="text-red-500">*</span></label>
+                        <input type="text" id="location" name="location" placeholder="Ex: Sala 301, Escritório Principal" class="app-input" required maxlength="100">
+                        <p class="text-xs text-gray-500 mt-1">Onde o ativo está fisicamente localizado.</p>
+                    </div>
+                    <div>
+                        <label for="status" class="app-label">Status <span class="text-red-500">*</span></label>
+                        <select id="status" name="status" class="app-select" required>
+                            <option value="">Selecione um status</option>
+                            <option value="Em Uso">Em Uso</option>
+                            <option value="Em Manutenção">Em Manutenção</option>
+                            <option value="Armazenado">Armazenado</option>
+                            <option value="Desativado">Desativado</option>
+                            <option value="Perdido">Perdido</option>
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1">Condição atual do ativo.</p>
+                    </div>
+                </div>
+
+                <div class="w-full">
+                    <label for="description" class="app-label">Descrição Detalhada</label>
+                    <textarea id="description" name="description" placeholder="Inclua informações adicionais como especificações técnicas, número de série, etc." rows="4" class="app-input"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Informações complementares sobre o ativo.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="serialNumber" class="app-label">Número de Série</label>
+                        <input type="text" id="serialNumber" name="serialNumber" placeholder="SN123456789BR" class="app-input" maxlength="50">
+                        <p class="text-xs text-gray-500 mt-1">Identificador único do fabricante.</p>
+                    </div>
+                    <div>
+                        <label for="responsible" class="app-label">Responsável</label>
+                        <input type="text" id="responsible" name="responsible" placeholder="Nome do Funcionário ou Departamento" class="app-input" maxlength="100">
+                        <p class="text-xs text-gray-500 mt-1">Pessoa ou setor responsável pelo ativo.</p>
+                    </div>
+                    <div>
+                        <label for="invoiceNumber" class="app-label">Número da Nota Fiscal</label>
+                        <input type="text" id="invoiceNumber" name="invoiceNumber" placeholder="NF-XXXX-YYYY" class="app-input" maxlength="50">
+                        <p class="text-xs text-gray-500 mt-1">Referência da nota fiscal de compra.</p>
+                    </div>
+                    <div>
+                        <label for="warrantyEndDate" class="app-label">Fim da Garantia</label>
+                        <input type="date" id="warrantyEndDate" name="warrantyEndDate" class="app-input">
+                        <p class="text-xs text-gray-500 mt-1">Data de término da garantia do fabricante.</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-200 pt-6 mt-6">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Campos Personalizados</h4>
+                    <div id="dynamicFields" class="space-y-4">
+                        </div>
+                    <button type="button" id="addDynamicFieldBtn" class="app-btn-secondary text-sm mt-4">
+                        <i class="fas fa-plus mr-2"></i> Adicionar Campo Personalizado
+                    </button>
+                </div>
+
+                <div class="flex justify-end gap-4 mt-8">
+                    <button type="button" id="cancelFormBtn" class="app-btn-secondary">Cancelar</button>
+                    <button type="submit" class="app-btn-primary">Salvar Ativo</button>
+                </div>
+            </form>
+            <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" title="Fechar">
+                <i class="fas fa-times-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="assetDetailsModal" class="fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden animate-fade-in" role="dialog" aria-modal="true" aria-labelledby="detailsModalTitle">
+        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-xl mx-auto relative transform transition-all scale-95 opacity-0 animate-scale-in-fade-in ring-1 ring-blue-200">
+            <h3 id="detailsModalTitle" class="text-3xl font-bold text-gray-900 mb-6 text-center">Detalhes do Ativo</h3>
+            <div id="assetDetailsContent" class="space-y-4 text-gray-700">
+                </div>
+            <div class="flex justify-center gap-4 mt-8">
+                <button id="editDetailsBtn" class="app-btn-primary">Editar</button>
+                <button id="deleteDetailsBtn" class="app-btn-danger">Excluir</button>
+                <button id="closeDetailsModalBtn" class="app-btn-secondary">Fechar</button>
+            </div>
+            <button id="closeDetailsModalBtnTop" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" title="Fechar">
+                <i class="fas fa-times-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="messageBox" class="fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden animate-fade-in" role="dialog" aria-modal="true" aria-labelledby="messageBoxTitle" aria-describedby="messageBoxContent">
+        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm mx-auto text-center relative transform transition-all scale-95 opacity-0 animate-scale-in-fade-in ring-1 ring-blue-200">
+            <h3 id="messageBoxTitle" class="text-2xl font-bold text-gray-900 mb-4"></h3>
+            <p id="messageBoxContent" class="text-gray-700 mb-6"></p>
+            <div id="messageBoxActions" class="flex justify-center gap-4">
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="fixed bottom-4 right-4 z-[100] space-y-3" aria-live="polite">
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
