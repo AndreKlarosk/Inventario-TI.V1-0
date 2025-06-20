@@ -851,3 +851,8 @@ main {
         margin-bottom: 1rem;
     }
 }
+#assetModal {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: auto;
+}
