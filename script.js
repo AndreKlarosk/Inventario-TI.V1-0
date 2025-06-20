@@ -716,6 +716,7 @@ const AuthManagement = (() => {
             } else {
                 UIService.showToast("Erro no registro: " + error.message, "error");
             }
+        }
     };
 
     /**
