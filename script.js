@@ -711,6 +711,7 @@ const AuthManagement = (() => {
             UIService.showAuthForm(DOM.companyRegisterForm); // Move to company registration
         } catch (error) {
             console.error("Erro no registro:", error);
+            UIService.showToast("E-mail em uso, utilize outro válido", "error");
             UIService.showToast("Erro no registro: " + error.message, "error");
         } finally {
             UIService.showLoading(false);
