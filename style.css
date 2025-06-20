@@ -865,4 +865,10 @@ main {
     -webkit-overflow-scrolling: touch;
     touch-action: auto;
 }
+#assetModal {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: auto;
+    z-index: 1000;
+}
 
