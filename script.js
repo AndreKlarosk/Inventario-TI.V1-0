@@ -363,6 +363,13 @@ const UIService = (() => {
                 }
             }
         }
+        // Impede rolagem do fundo (mobile e desktop)
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.touchAction = 'none';
+        
+        // Exibe o modal
         toggleVisibility(DOM.assetModal, true);
     };
 
@@ -370,9 +377,15 @@ const UIService = (() => {
      * Closes all modals.
      */
     const closeModals = () => {
-        toggleVisibility(DOM.assetModal, false);
-        toggleVisibility(DOM.assetDetailsModal, false);
-        closeMessageBox(); // Also close message box
+    // ✅ Restaura rolagem e interação no body (mobile fix)
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+    document.body.style.touchAction = '';
+
+    toggleVisibility(DOM.assetModal, false);
+    toggleVisibility(DOM.assetDetailsModal, false);
+    closeMessageBox(); // Also close message box
     };
 
     /**
