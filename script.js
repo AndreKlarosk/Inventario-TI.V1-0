@@ -990,9 +990,10 @@ const AuthManagement = (() => {
     return {
         setupAuthListener,
         setupAuthEventListeners,
-        logoutUser // Expose logout for other parts if needed
+        logoutUser, // Expose logout for other parts if needed
+        loginUser
     };
-});
+})();
 
 // --- 5. Asset Service (Handles all Firebase Firestore operations for assets) ---
 const AssetService = (() => {
