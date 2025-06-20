@@ -1463,3 +1463,11 @@ const ValidationService = (() => {
 
 // --- 8. Initialize Application on Window Load ---
 window.onload = App.init;
+// --- 9. Register Service Worker for PWA ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('✅ Service Worker registrado!', reg))
+      .catch(err => console.error('❌ Erro ao registrar Service Worker:', err));
+  });
+}
